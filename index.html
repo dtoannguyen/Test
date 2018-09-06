@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Test</title>
+  <style type="text/css">
+  * {
+  padding: 0;
+  margin: 0;
+}
+
+.body-wrapper {
+  text-align: center;
+  overflow: hidden /*!important*/;
+  position: relative;
+}
+
+button {
+  margin: 50vh 0;
+}
+
+.modal {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.modal__controls {
+  position: relative;
+  z-index: 5;
+}
+
+.closing-button {
+  position: fixed;
+  top: 2vh;
+  right: 3vw;
+  font-size: 3em;
+  color: #f1f1f1;
+  transform: rotate(45deg);
+}
+
+.arrow {
+  color: #f1f1f1;
+  position: fixed;
+  top: 50vh;
+  padding: 0;
+  font-size: 5em;
+  background-color: #999999;
+}
+
+#left-arrow {
+  left: 2vw;
+}
+
+#right-arrow {
+  right: 2vw;
+}
+
+.modal__pages-wrapper {
+  position: absolute;
+  display: flex;
+/*  flex-wrap: nowrap;*/
+/*  overflow: scroll;*/
+/*  position: relative;*/
+  /* border: 3px dotted red; */
+  z-index: 0;
+}
+
+.page-wrapper {
+/*  display: flex;*/
+  /* border: 7px dotted orange; */
+  -webkit-overflow-scrolling: touch;
+  padding: 0 20px;
+}
+
+.modal__page {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  min-width: 100vw;
+  min-height: 100vh;
+  transition: transform 0.4s ease;
+}
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+#backdrop1 {
+  /* border: 4px dotted blue; */
+}
+
+#backdrop2 {
+  /* border: 4px dotted green; */
+}
+
+.image-container {
+  min-width: 70%;
+  width: 800px;
+  max-width: 100%;
+  z-index: 1;
+  /* border: 4px dotted black; */
+}
+  </style>
+</head>
+<body>
+  <div class="body-wrapper">
+    <button id="button">Open Module</button>
+
+  <div class="modal" id="modal">
+
+    <div class="modal__controls">
+      <div class="closing-button" id="closing-button">+</div>
+      <div class="arrow" id="left-arrow"><</div>
+      <div class="arrow" id="right-arrow">></div>
+    </div>
+
+    <div class="modal__pages-wrapper" id="wrapper">
+      <div class="page-wrapper" id="page1-wrapper">
+        <section class="modal__page" id="page1">
+          <div class="backdrop" id="backdrop1"></div>
+          <img class="image-container" id="image-container1" src="https://c2.staticflickr.com/6/5537/10604112716_45e7f4f836_k.jpg">
+        </section>
+      </div>
+
+      <div class="page-wrapper" id="page2-wrapper">
+        <section class="modal__page" id="page2">
+          <div class="backdrop" id="backdrop2"></div>
+          <img class="image-container" id="image-container2" src="https://stmed.net/sites/default/files/skiing-wallpapers-31379-3300838.jpg">
+        </section>
+      </div>
+
+    </div>
+
+  </div>
+
+  </div>
+
+<script>
+let startY;
+let endY;
+let yChange;
+let iterationCount = 0;
+let easingValue;
+let requestId;
+let i = 0;
+
+let closingButton = document.getElementById('closing-button');
+let leftArrow = document.getElementById('left-arrow');
+let rightArrow = document.getElementById('right-arrow');
+let wrapper = document.getElementById('wrapper');
+let page1Wrapper = document.getElementById('page1-wrapper');
+let page2Wrapper = document.getElementById('page2-wrapper');
+let page1 = document.getElementById('page1');
+let page2 = document.getElementById('page2');
+let imageContainer1 = document.getElementById('image-container1');
+let imageContainer2 = document.getElementById('image-container2');
+
+let isZoomedIn = false;
+let clickX;
+let clickY;
+let lastTapTime;
+
+// dragElement(wrapper);
+dragElementWithTouch(wrapper);
+
+document.getElementById('button').onclick = function() {
+modal.style.display = "block";
+wrapper.style.left = "-20px";
+document.body.style.overflow = "hidden";
+}
+
+closingButton.onclick = function() {
+modal.style.display = "none";
+document.body.style.removeProperty('overflow');
+}
+
+// imageContainer1.onclick = function(click) {
+// clickTime = new Date();
+// if ( clickTime - dragTime < 150) {
+//   dragTime = undefined;
+//   clickTime = undefined;
+// if (isZoomedIn === true) {
+//   isZoomedIn = false;
+//   page1.style.transformOrigin = `${clickX}px ${clickY}px`;
+// page1.style.removeProperty('transform');
+//   page1Wrapper.style.removeProperty('overflow');
+// } else {
+//   isZoomedIn = true;
+//   clickX = click.clientX;
+//   console.log(clickX);
+//   clickY = click.clientY;
+//   page1.style.transformOrigin = `${clickX}px ${clickY}px`;
+//   page1.style.transform = "scale(2)";
+//
+//   setTimeout(function(){
+//     page1Wrapper.style.overflow = "scroll";
+//     page1.style.transformOrigin = "0 0";
+//     page1Wrapper.scrollTo(clickX, clickY);
+//
+//   },500);
+// }
+// }
+// }
+
+// imageContainer2.addEventListener('click', zoomIntoImageContainer2);
+function zoomIntoImageContainer2Gesture(event) {
+  console.log('imageContainer2 touchstart event...');
+  minZoomLevel = 1;
+  maxZoomLevel = 2;
+  event = event || window.event;
+  event.preventDefault();
+  event.stopPropagation();
+  // if (event.targetTouches.length === 2) {
+    console.log('detected 2 fingers...');
+    touch1Location = event.touches[0];
+    touch2Location = event.touches[1];
+    touch1X = touch1Location.pageX;
+    touch1Y = touch1Location.pageY;
+    touch2X = touch2Location.pageX;
+    touch2Y = touch2Location.pageY;
+    console.log(`touch1X: ${touch1X}, touch1Y: ${touch1Y}, touch2X: ${touch2X}, touch2Y: ${touch2Y}`);
+    // midPointX = (touch1X + touch2X)/2;
+    // midPointY = (touch1Y + touch2Y)/2;
+    initDistance = Math.sqrt(Math.pow(touch1X - touch2X, 2) + Math.pow(touch1Y - touch2Y, 2));
+    console.log(distance);
+    document.ontouchend = endHandler;
+    document.ontouchmove = moveHandler;
+  // } else {
+  //   console.log('couldnt detect 2 fingers...');
+  // }
+
+}
+
+function moveHandler(event) {
+  console.log('moveHandler...');
+  event = event || window.event;
+  event.preventDefault();
+  event.stopPropagation();
+  touch1Location = event.targetTouches[0];
+  touch2Location = event.targetTouches[1];
+  touch1X = touch1Location.pageX;
+  touch1Y = touch1Location.pageY;
+  touch2X = touch2Location.pageX;
+  touch2Y = touch2Location.pageY;
+  console.log(`touch1X: ${touch1X}, touch1Y: ${touch1Y}, touch2X: ${touch2X}, touch2Y: ${touch2Y}`);
+  midPointX = (touch1X + touch2X)/2;
+  midPointY = (touch1Y + touch2Y)/2;
+  newDistance = Math.sqrt(Math.pow(touch1X - touch2X, 2) + Math.pow(touch1Y - touch2Y, 2));
+  distanceFactor = (newDistance / initDistance);
+  console.log(distanceFactor);
+  page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
+  zoomLevel = 0.25 * distanceFactor + 0.75;
+  page2.style.transform = `scale(${zoomLevel})`;
+  isZoomedIn = true;
+}
+
+function endHandler(event) {
+  console.log('endHandler...');
+  event = event || window.event;
+  event.preventDefault();
+  event.stopPropagation();
+  if (zoomLevel > 2) {
+    zoomLevel = 2;
+    page2.style.transform = `scale(${zoomLevel})`;
+  } else if (zoomLevel <= 1) {
+    zoomLevel = 1;
+    page2.style.removeProperty('transform');
+    isZoomedIn = false;
+  }
+  imageContainer2.removeEventListener('touchstart', zoomIntoImageContainer2Gesture);
+  console.log('removed touchstart eventListener...');
+  // imageContainer2.removeEventListener('touchmove', moveHandler);
+  document.ontouchmove = null;
+  console.log('removed touchmove eventListener...');
+  // imageContainer2.removeEventListener('touchend', endHandler);
+  document.ontouchend = null;
+  console.log('removed touchend eventListener...');
+  setTimeout(function(){
+    page2Wrapper.style.overflow = "scroll";
+    page2.style.transformOrigin = "0 0";
+    page2Wrapper.scrollTo(midPointX, midPointY);
+  },500);
+}
+
+
+
+
+imageContainer2.addEventListener('touchend', zoomIntoImageContainer2);
+function zoomIntoImageContainer2(click) {
+  clickTime = new Date();
+  console.log(`ClickTime: ${clickTime}`);
+  // console.log(`Timediff: ${clickTime - dragTime}`);
+  click = click || window.event;
+  console.log(click.type);
+  if (click.type === "touchend") {
+    console.log('touchend event...');
+    console.log(`${click.changedTouches.length}`);
+    if (clickTime - lastTapTime < 250 && click.changedTouches.length === 1) {
+      // if (clickTime - dragTime < 150) {
+        // dragTime = undefined;
+        if (isZoomedIn === true) {
+          isZoomedIn = false;
+          page2.style.transformOrigin = `${clickX}px ${clickY}px`;
+          page2.style.removeProperty('transform');
+          page2Wrapper.style.removeProperty('overflow');
+        } else {
+          isZoomedIn = true;
+          let touchLocations = click.changedTouches[0];
+          console.log('setting touchLocations...');
+          clickX = touchLocations.pageX;
+          clickY = touchLocations.pageY;
+          page2.style.transformOrigin = `${clickX}px ${clickY}px`;
+          page2.style.transform = "scale(2)";
+          setTimeout(function(){
+            page2Wrapper.style.overflow = "scroll";
+            page2.style.transformOrigin = "0 0";
+            page2Wrapper.scrollTo(clickX, clickY);
+          },500);
+        // }
+      }
+    }
+    lastTapTime = clickTime;
+    console.log(`lastTapTime: ${lastTapTime}`);
+    clickTime = undefined;
+  } else {
+    // if (clickTime - dragTime < 150) {
+    //   dragTime = undefined;
+      clickTime = undefined;
+      if (isZoomedIn === true) {
+        isZoomedIn = false;
+        page2.style.transformOrigin = `${clickX}px ${clickY}px`;
+        page2.style.removeProperty('transform');
+        page2Wrapper.style.removeProperty('overflow');
+      } else {
+        isZoomedIn = true;
+        clickX = click.clientX;
+        clickY = click.clientY;
+        page2.style.transformOrigin = `${clickX}px ${clickY}px`;
+        page2.style.transform = "scale(2)";
+        setTimeout(function(){
+          page2Wrapper.style.overflow = "scroll";
+          page2.style.transformOrigin = "0 0";
+          page2Wrapper.scrollTo(clickX, clickY);
+        },500);
+      }
+    // }
+  }
+  // if (clickTime - dragTime < 150) {
+  //   dragTime = undefined;
+  //   clickTime = undefined;
+  //   if (isZoomedIn === true) {
+  //     isZoomedIn = false;
+  //     page2.style.transformOrigin = `${clickX}px ${clickY}px`;
+  //     page2.style.removeProperty('transform');
+  //     page2Wrapper.style.removeProperty('overflow');
+  //   } else {
+  //     isZoomedIn = true;
+  //     let touchLocations;
+  //     if (click.type === "touchend") {
+  //       console.log('setting touchLocations...');
+  //       touchLocations = click.changedTouches[0];
+  //       clickX = touchLocations.pageX;
+  //       clickY = touchLocations.pageY;
+  //     } else {
+  //       clickX = click.clientX;
+  //       clickY = click.clientY;
+  //     }
+  //     page2.style.transformOrigin = `${clickX}px ${clickY}px`;
+  //     page2.style.transform = "scale(2)";
+  //     setTimeout(function(){
+  //       page2Wrapper.style.overflow = "scroll";
+  //       page2.style.transformOrigin = "0 0";
+  //       page2Wrapper.scrollTo(clickX, clickY);
+  //     },500);
+  //   }
+  // }
+}
+/*
+imageContainer2.onclick = function(click) {
+if (dragged === true) {
+  console.log('test');
+  click.stopPropagation();
+  click.preventDefault();
+  dragged = false;
+  return false;
+} else {
+if (isZoomedIn === true) {
+  isZoomedIn = false;
+  page2.style.transformOrigin = `${clickX}px ${clickY}px`;
+page2.style.removeProperty('transform');
+  page2Wrapper.style.removeProperty('overflow');
+} else {
+  isZoomedIn = true;
+  clickX = click.clientX;
+  console.log(clickX);
+  clickY = click.clientY;
+  page2.style.transformOrigin = `${clickX}px ${clickY}px`;
+  page2.style.transform = "scale(2)";
+
+  setTimeout(function(){
+    page2Wrapper.style.overflow = "scroll";
+    page2.style.transformOrigin = "0 0";
+    page2Wrapper.scrollTo(clickX, clickY);
+
+  },500);
+}
+}
+}
+*/
+page1Wrapper.onscroll = function() {
+if (isZoomedIn === true) {
+  clickX = page1Wrapper.scrollLeft;
+  clickY = page1Wrapper.scrollTop;
+}
+}
+
+// DRAGGING
+
+function dragElement(elmnt) {
+var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+elmnt.onmousedown = dragMouseDown;
+
+function dragMouseDown(e) {
+  e = e || window.event;
+  e.preventDefault();
+  e.stopPropagation();
+  console.log('dragging with mouse...');
+  dragTime = new Date();
+  // get the mouse cursor position at startup:
+  pos3 = e.clientX;
+  pos4 = e.clientY;
+  document.onmouseup = closeDragElement;
+  // call a function whenever the cursor moves:
+  document.onmousemove = elementDrag;
+}
+
+function elementDrag(e) {
+  e = e || window.event;
+  e.preventDefault();
+  e.stopPropagation();
+  // calculate the new cursor position:
+  pos1 = pos3 - e.clientX;
+  pos2 = pos4 - e.clientY;
+  pos3 = e.clientX;
+  pos4 = e.clientY;
+  // set the element's new position:
+/*    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";*/
+  elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+}
+
+function closeDragElement(e) {
+  /* stop moving when mouse button is released:*/
+  document.onmouseup = null;
+  document.onmousemove = null;
+  wrapper.style.transition = "left 0.25s ease-in-out";
+  let left = wrapper.style.left;
+  let leftNumber = Number(left.slice(0, -2));
+  if (leftNumber < -200) {
+    wrapper.style.left = `-${window.innerWidth + 60}px`
+  } else {
+    wrapper.style.left = "-20px";
+  }
+  setTimeout(function(){
+    wrapper.style.removeProperty('transition')
+  },250);
+}
+}
+
+// TOUCH DRAGGING
+
+function dragElementWithTouch(elmnt) {
+var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+let startPositionX;
+elmnt.ontouchstart = dragMouseDown;
+
+function dragMouseDown(e) {
+  e = e || window.event;
+  console.log('wrapper drag event...');
+  e.preventDefault();
+  e.stopPropagation();
+  console.log(`${e.touches.length}`);
+  if (e.touches.length === 1) {
+    // e.preventDefault();
+    // e.stopPropagation();
+    dragTime = new Date();
+    console.log('dragging with touch...');
+    console.log(`DragTime: ${dragTime}`);
+    startPositionX = Number(elmnt.style.left.slice(0, -2));
+    // get the mouse cursor position at startup:
+    let touchLocations = e.targetTouches[0];
+    pos3 = touchLocations.pageX;
+    pos4 = touchLocations.pageY;
+    document.ontouchend = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.ontouchmove = elementDrag;
+  } else {
+    console.log('more than one finger touching...');
+    imageContainer2.ontouchstart = zoomIntoImageContainer2Gesture;
+  }
+
+}
+
+function elementDrag(e) {
+  e = e || window.event;
+  e.preventDefault();
+  e.stopPropagation();
+  // calculate the new cursor position:
+  let touchLocations = e.targetTouches[0];
+  pos1 = pos3 - touchLocations.pageX;
+  pos2 = pos4 - touchLocations.pageY;
+  pos3 = touchLocations.pageX;
+  pos4 = touchLocations.pageY;
+  // set the element's new position:
+/*    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";*/
+  elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+}
+
+function closeDragElement(e) {
+  e = e || window.event;
+  e.preventDefault();
+  e.stopPropagation();
+  /* stop moving when mouse button is released:*/
+  document.ontouchend = null;
+  document.ontouchmove = null;
+  let diff = Number(elmnt.style.left.slice(0, -2)) - startPositionX;
+  console.log(`diff: ${diff}`);
+  wrapper.style.transition = "left 0.07s ease";
+  console.log(startPositionX);
+  if (startPositionX === -20 && diff < -(window.innerWidth/5)) {
+    console.log("startPositionX === 0 && diff < -200");
+    wrapper.style.left = `-${window.innerWidth + 60}px`
+  } else if (startPositionX === -20) {
+    console.log("startPositionX === 0 && diff > -200");
+    wrapper.style.left = "-20px";
+  } else if (startPositionX === -(window.innerWidth + 60) && diff > (window.innerWidth/5)) {
+    console.log("startPositionX === -window.innerWidth && diff > 200");
+    wrapper.style.left = "-20px";
+  } else if (startPositionX === -(window.innerWidth + 60)) {
+    console.log("startPositionX === -window.innerWidth && diff < 200");
+    wrapper.style.left = `-${window.innerWidth + 60}px`;
+  } else {
+    console.log('else statement...');
+    wrapper.style.left = "-20px";
+  }
+  startPositionX = undefined;
+  setTimeout(function(){
+    wrapper.style.removeProperty('transition');
+  },250);
+}
+}
+
+
+// SCROLLING
+
+rightArrow.onclick = function() {
+console.log('right arrow clicked...');
+wrapper.style.transition = "left 0.3s ease-in-out";
+wrapper.style.left = `-${window.innerWidth + 60}px`;
+setTimeout(function(){
+  wrapper.style.removeProperty('transition');
+}, 300);
+/*if (easingValue !== undefined) {
+  easingValue = undefined;
+  iterationCount = 0;
+  cancelAnimationFrame(requestId);
+  console.log("overwrite requestAnimationFrame");
+}
+startY = 0;
+console.log(`startY: ${startY}`);
+endY = document.getElementById("page2").offsetLeft;
+console.log(endY);
+yChange = endY - startY;
+console.log(`yChange: ${yChange}`);
+scrollToObj();
+*/
+}
+
+leftArrow.onclick = function() {
+console.log('left arrow clicked...');
+  wrapper.style.transition = "left 0.3s ease-in-out";
+wrapper.style.left = "-20px";
+setTimeout(function(){
+  wrapper.style.removeProperty('transition');
+}, 300);
+/*if (easingValue !== undefined) {
+  easingValue = undefined;
+  iterationCount = 0;
+  cancelAnimationFrame(requestId);
+  console.log("overwrite requestAnimationFrame");
+}
+startY = window.innerWidth;
+console.log(`startY: ${startY}`);
+endY = document.getElementById("page1").offsetLeft;
+console.log(endY);
+yChange = endY - startY;
+console.log(`yChange: ${yChange}`);
+scrollToObj();*/
+}
+/*
+function easeInOutQuad(currentIteration, startValue, changeInValue, totalIterations) {
+if ((currentIteration /= totalIterations / 2) < 1) {
+  return changeInValue / 2 * currentIteration * currentIteration + startValue;
+}
+return -changeInValue / 2 * ((--currentIteration) * (currentIteration - 2) - 1) + startValue;
+}
+
+function scrollToObj() {
+easingValue = easeInOutQuad(iterationCount, startY, yChange, 25);
+window.scrollTo(easingValue, 0);
+console.log(`easingValue: ${easingValue}`);
+console.log(`iterationCount: ${iterationCount}`);
+iterationCount++;
+if (iterationCount <= 25) {
+  requestId = requestAnimationFrame(scrollToObj);
+} else {
+  iterationCount = 0;
+  easingValue = undefined;
+  console.log("requestAnimationFrame done");
+}
+}
+*/
+
+</script>
+</body>
+</html>
