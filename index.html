@@ -487,12 +487,10 @@ elmnt.ontouchstart = dragMouseDown;
 function dragMouseDown(e) {
   e = e || window.event;
   console.log('wrapper drag event...');
-  e.preventDefault();
-  e.stopPropagation();
   console.log(`${e.touches.length}`);
   if (e.touches.length === 1 && isZoomedIn === false) {
-    // e.preventDefault();
-    // e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
     dragTime = new Date();
     console.log('dragging with touch...');
     console.log(`DragTime: ${dragTime}`);
@@ -504,9 +502,13 @@ function dragMouseDown(e) {
     document.ontouchend = closeDragElement;
     // call a function whenever the cursor moves:
     document.ontouchmove = elementDrag;
-  } else {
+  } else if (e.touches.length === 2) {
     console.log('more than one finger touching...');
+    e.preventDefault();
+    e.stopPropagation();
     imageContainer2.ontouchstart = zoomIntoImageContainer2Gesture;
+  } else {
+    console.log('default behaviour...');
   }
 
 }
