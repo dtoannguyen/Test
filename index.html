@@ -218,8 +218,8 @@ function zoomIntoImageContainer2Gesture(event) {
   minZoomLevel = 1;
   maxZoomLevel = 2;
   event = event || window.event;
-  event.preventDefault();
-  event.stopPropagation();
+  /*event.preventDefault();
+  event.stopPropagation();*/
   console.log('event.targetTouches')
   if (event.targetTouches.length === 2) {
     console.log('detected 2 fingers...');
