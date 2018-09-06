@@ -490,7 +490,7 @@ function dragMouseDown(e) {
   e.preventDefault();
   e.stopPropagation();
   console.log(`${e.touches.length}`);
-  if (e.touches.length === 1) {
+  if (e.touches.length === 1 && isZoomedIn === false) {
     // e.preventDefault();
     // e.stopPropagation();
     dragTime = new Date();
