@@ -220,10 +220,11 @@ function zoomIntoImageContainer2Gesture(event) {
   event = event || window.event;
   event.preventDefault();
   event.stopPropagation();
-  // if (event.targetTouches.length === 2) {
+  console.log('event.targetTouches')
+  if (event.targetTouches.length === 2) {
     console.log('detected 2 fingers...');
-    touch1Location = event.touches[0];
-    touch2Location = event.touches[1];
+    touch1Location = event.targetTouches[0];
+    touch2Location = event.targetTouches[1];
     touch1X = touch1Location.pageX;
     touch1Y = touch1Location.pageY;
     touch2X = touch2Location.pageX;
@@ -235,9 +236,9 @@ function zoomIntoImageContainer2Gesture(event) {
     console.log(distance);
     document.ontouchend = endHandler;
     document.ontouchmove = moveHandler;
-  // } else {
-  //   console.log('couldnt detect 2 fingers...');
-  // }
+  } else {
+    console.log('couldnt detect 2 fingers...');
+  }
 
 }
 
