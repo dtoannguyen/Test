@@ -272,6 +272,7 @@ function endHandler(event) {
   event = event || window.event;
   event.preventDefault();
   event.stopPropagation();
+  page2.style.transition = "transform 0.4s ease";
   if (zoomLevel > 2) {
     zoomLevel = 2;
     page2.style.transform = `scale(${zoomLevel})`;
@@ -293,6 +294,7 @@ function endHandler(event) {
     page2.style.transformOrigin = "0 0";
     page2Wrapper.scrollTo(midPointX, midPointY);
     imageContainer2.addEventListener('touchend', zoomIntoImageContainer2);
+    page2.style.removeProperty('transition');
   },500);
 }
 
