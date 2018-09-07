@@ -261,7 +261,8 @@ function moveHandler(event) {
   distanceFactor = (newDistance / initDistance);
   console.log(distanceFactor);
   page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
-  zoomLevel = 0.25 * distanceFactor + 0.75;
+  /*zoomLevel = 0.25 * distanceFactor + 0.75;*/
+  zoomLevel = distanceFactor;
   page2.style.transform = `scale(${zoomLevel})`;
   isZoomedIn = true;
 }
@@ -275,7 +276,6 @@ function endHandler(event) {
     zoomLevel = 2;
     page2.style.transform = `scale(${zoomLevel})`;
   } else if (zoomLevel <= 1) {
-    zoomLevel = 1;
     page2.style.removeProperty('transform');
     isZoomedIn = false;
   }
