@@ -84,11 +84,11 @@ button {
   margin: 0 20px;
   
   /* NEW */
-  /*display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   min-width: 100vw;
-  min-height: 100vh;*/
+  min-height: 100vh;
 }
 
 .modal__page {
@@ -96,10 +96,10 @@ button {
   position: relative;
   justify-content: center;
   align-items: center;
-  min-width: 100vw;
+  /*min-width: 100vw;
   min-height: 100vh; */
  /* transition: transform 0.4s ease;*/
-  /* margin: 15px 0;*/
+  margin: 15px 0;
   border: 4px dotted blue;
 }
 
@@ -348,7 +348,7 @@ function zoomIntoImageContainer2(click) {
         let touchLocations = click.changedTouches[0];
       console.log('setting touchLocations...');
       clickX = touchLocations.pageX;
-      clickY = touchLocations.pageY;
+      clickY = touchLocations.pageY - page2.offsetTop;
       page2.style.transformOrigin = `${clickX}px ${clickY}px`;
         page2.style.transform = "scale(2)";
         setTimeout(function(){
