@@ -323,13 +323,10 @@ function zoomIntoImageContainer2(click) {
       page2.style.transition = "transform 0.4s ease";
       // if (clickTime - dragTime < 150) {
         // dragTime = undefined;
-      let touchLocations = click.changedTouches[0];
-      console.log('setting touchLocations...');
-      clickX = touchLocations.pageX;
-      clickY = touchLocations.pageY;
-      page2.style.transformOrigin = `${clickX}px ${clickY}px`;
+      
       if (isZoomedIn === true) {
         isZoomedIn = false;
+        page2.style.transformOrigin = `${clickX}px ${clickY}px`;
         page2.style.removeProperty('transform');
         page2Wrapper.style.removeProperty('overflow');
         setTimeout(function() {
@@ -337,6 +334,11 @@ function zoomIntoImageContainer2(click) {
         }, 400);
       } else {
         isZoomedIn = true;
+        let touchLocations = click.changedTouches[0];
+      console.log('setting touchLocations...');
+      clickX = touchLocations.pageX;
+      clickY = touchLocations.pageY;
+      page2.style.transformOrigin = `${clickX}px ${clickY}px`;
         page2.style.transform = "scale(2)";
         setTimeout(function(){
           page2Wrapper.style.overflow = "scroll"
@@ -434,10 +436,10 @@ page2.style.removeProperty('transform');
 }
 }
 */
-page1Wrapper.onscroll = function() {
+page2Wrapper.onscroll = function() {
 if (isZoomedIn === true) {
-  clickX = page1Wrapper.scrollLeft;
-  clickY = page1Wrapper.scrollTop;
+  clickX = page2Wrapper.scrollLeft;
+  clickY = page2Wrapper.scrollTop;
 }
 }
 
