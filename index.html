@@ -222,6 +222,8 @@ document.body.style.removeProperty('overflow');
 // }
 
 // imageContainer2.addEventListener('click', zoomIntoImageContainer2);
+imageContainer2.ontouchstart = zoomIntoImageContainer2Gesture;
+  
 function zoomIntoImageContainer2Gesture(event) {
   console.log('imageContainer2 touchstart event...');
   minZoomLevel = 1;
@@ -288,8 +290,8 @@ function endHandler(event) {
     page2.style.removeProperty('transform');
     isZoomedIn = false;
   }
-  imageContainer2.removeEventListener('touchstart', zoomIntoImageContainer2Gesture);
-  console.log('removed touchstart eventListener...');
+  // imageContainer2.removeEventListener('touchstart', zoomIntoImageContainer2Gesture);
+  // console.log('removed touchstart eventListener...');
   // imageContainer2.removeEventListener('touchmove', moveHandler);
   document.ontouchmove = null;
   console.log('removed touchmove eventListener...');
@@ -524,7 +526,7 @@ function dragMouseDown(e) {
     console.log('more than one finger touching...');
     e.preventDefault();
     e.stopPropagation();
-    imageContainer2.ontouchstart = zoomIntoImageContainer2Gesture;
+    // imageContainer2.ontouchstart = zoomIntoImageContainer2Gesture;
   } else {
     console.log('default behaviour...');
   }
