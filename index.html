@@ -292,8 +292,8 @@ function endHandler(event) {
   event.preventDefault();
   event.stopPropagation();
   page2.style.transition = "transform 0.4s ease";
-  if (zoomLevel > 2) {
-    zoomLevel = 2;
+  if (zoomLevel > 3) {
+    zoomLevel = 3;
     page2.style.transform = `scale(${zoomLevel})`;
   } else if (zoomLevel <= 1) {
     page2.style.removeProperty('transform');
@@ -350,7 +350,7 @@ function zoomIntoImageContainer2(click) {
       clickX = touchLocations.pageX;
       clickY = touchLocations.pageY - page2.offsetTop;
       page2.style.transformOrigin = `${clickX}px ${clickY}px`;
-        page2.style.transform = "scale(2)";
+        page2.style.transform = "scale(3)";
         setTimeout(function(){
           page2Wrapper.style.overflow = "scroll"
           page2.style.transformOrigin = "0 0";
