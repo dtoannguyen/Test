@@ -311,7 +311,7 @@ function zoomIntoImageContainer2(event) {
   console.log(`ClickTime: ${clickTime}`);
   // console.log(`Timediff: ${clickTime - dragTime}`);
   event = event || window.event;
-  console.log(click.type);
+  console.log(event.type);
   if (event.type === "touchend") {
     console.log('touchend event...');
     console.log(`${event.changedTouches.length}`);
