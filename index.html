@@ -203,6 +203,9 @@ function zoomIntoImageContainer2Gesture(event) {
     touch2Y = touch2Location.pageY;
     initDistance = Math.sqrt(Math.pow(touch1X - touch2X, 2) + Math.pow(touch1Y - touch2Y, 2));
     console.log(initDistance);
+    midPointX = (touch1X + touch2X)/2;
+    midPointY = (touch1Y + touch2Y)/2;
+    page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
     offsetTop = imageContainer2.offsetTop;
     document.ontouchend = endHandler;
     document.ontouchmove = moveHandler;
@@ -223,13 +226,9 @@ function moveHandler(event) {
   touch1Y = touch1Location.pageY;
   touch2X = touch2Location.pageX;
   touch2Y = touch2Location.pageY;
-  console.log(`touch1X: ${touch1X}, touch1Y: ${touch1Y}, touch2X: ${touch2X}, touch2Y: ${touch2Y}`);
-  midPointX = (touch1X + touch2X)/2;
-  midPointY = (touch1Y + touch2Y)/2;
   newDistance = Math.sqrt(Math.pow(touch1X - touch2X, 2) + Math.pow(touch1Y - touch2Y, 2));
   distanceFactor = (newDistance / initDistance);
   console.log(distanceFactor);
-  page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
   zoomLevel = isZoomedIn === true ? (oldZoomLevel * distanceFactor) : distanceFactor;
   console.log(`${zoomLevel}`);
   page2.style.transform = `scale(${zoomLevel})`;
