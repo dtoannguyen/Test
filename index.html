@@ -312,11 +312,11 @@ function zoomIntoImageContainer2(event) {
   // console.log(`Timediff: ${clickTime - dragTime}`);
   event = event || window.event;
   console.log(event.type);
+  page2.style.transition = "transform 0.4s ease";
   if (event.type === "touchend") {
     console.log('touchend event...');
     console.log(`${event.changedTouches.length}`);
     if (clickTime - lastTapTime < 250 && event.changedTouches.length === 1) {
-      page2.style.transition = "transform 0.4s ease";
       // if (clickTime - dragTime < 150) {
         // dragTime = undefined;
       
@@ -349,9 +349,6 @@ function zoomIntoImageContainer2(event) {
     lastTapTime = clickTime;
     console.log(`lastTapTime: ${lastTapTime}`);
     clickTime = undefined;
-    setTimeout(function() {
-      page2.style.removeProperty('transition');
-    }, 400);
   } else {
     // if (clickTime - dragTime < 150) {
     //   dragTime = undefined;
@@ -374,7 +371,10 @@ function zoomIntoImageContainer2(event) {
         },500);
       }
     // }
-  }
+    }
+    setTimeout(function() {
+      page2.style.removeProperty('transition');
+    }, 400);
   // if (clickTime - dragTime < 150) {
   //   dragTime = undefined;
   //   clickTime = undefined;
