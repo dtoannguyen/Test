@@ -185,37 +185,8 @@ closingButton.onclick = function() {
   modal.style.display = "none";
   document.body.style.removeProperty('overflow');
 }
-
-// imageContainer1.onclick = function(click) {
-// clickTime = new Date();
-// if ( clickTime - dragTime < 150) {
-//   dragTime = undefined;
-//   clickTime = undefined;
-// if (isZoomedIn === true) {
-//   isZoomedIn = false;
-//   page1.style.transformOrigin = `${clickX}px ${clickY}px`;
-// page1.style.removeProperty('transform');
-//   page1Wrapper.style.removeProperty('overflow');
-// } else {
-//   isZoomedIn = true;
-//   clickX = click.clientX;
-//   console.log(clickX);
-//   clickY = click.clientY;
-//   page1.style.transformOrigin = `${clickX}px ${clickY}px`;
-//   page1.style.transform = "scale(2)";
-//
-//   setTimeout(function(){
-//     page1Wrapper.style.overflow = "scroll";
-//     page1.style.transformOrigin = "0 0";
-//     page1Wrapper.scrollTo(clickX, clickY);
-//
-//   },500);
-// }
-// }
-// }
-
 // imageContainer2.addEventListener('click', zoomIntoImageContainer2);
-imageContainer2.ontouchstart = zoomIntoImageContainer2Gesture;
+// imageContainer2.ontouchstart = zoomIntoImageContainer2Gesture;
   
 function zoomIntoImageContainer2Gesture(event) {
   console.log('imageContainer2 touchstart event...');
