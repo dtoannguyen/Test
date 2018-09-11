@@ -77,8 +77,8 @@ button {
   display: flex;
 /*  flex-wrap: nowrap;*/
 /*  overflow: scroll;*/
-/*  position: relative;*/
-  border: 3px dotted red;
+/*  position: relative;
+  border: 3px dotted red;*/
   z-index: 0;
 }
 
@@ -86,9 +86,9 @@ button {
   display: flex;
   min-width: 100vw;
   min-height: 100vh;
-  border: 5px dotted orange;
   -webkit-overflow-scrolling: touch;
   margin: 0 20px;
+  /*border: 5px dotted orange;*/
 }
 
 .modal__page {
@@ -98,8 +98,8 @@ button {
   align-items: center;
   min-width: 100vw;
   height: 100vh;
- /* transition: transform 0.4s ease;*/
-  border: 4px dotted blue;
+ /* transition: transform 0.4s ease;
+  border: 4px dotted blue;*/
 }
 
 .backdrop {
@@ -500,7 +500,7 @@ function closeDragElement(e) {
 rightArrow.onclick = function() {
 console.log('right arrow clicked...');
 wrapper.style.transition = "left 0.3s ease-in-out";
-wrapper.style.left = `-${window.innerWidth + 80}px`;
+wrapper.style.left = `-${window.innerWidth + 60}px`;
 setTimeout(function(){
   wrapper.style.removeProperty('transition');
 }, 300);
