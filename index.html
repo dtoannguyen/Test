@@ -308,18 +308,13 @@ imageContainer2.addEventListener('touchend', zoomIntoImageContainer2);
   
 function zoomIntoImageContainer2(event) {
   clickTime = new Date();
-  console.log(`ClickTime: ${clickTime}`);
-  // console.log(`Timediff: ${clickTime - dragTime}`);
   event = event || window.event;
   console.log(event.type);
   page2.style.transition = "transform 0.4s ease";
   if (event.type === "touchend") {
     console.log('touchend event...');
-    console.log(`${event.changedTouches.length}`);
+    console.log(`Fingers at touchend: ${event.changedTouches.length}`);
     if (clickTime - lastTapTime < 250 && event.changedTouches.length === 1) {
-      // if (clickTime - dragTime < 150) {
-        // dragTime = undefined;
-      
       if (isZoomedIn === true) {
         isZoomedIn = false;
         page2.style.height = `${window.innerHeight}px`;
@@ -343,100 +338,17 @@ function zoomIntoImageContainer2(event) {
           page2.style.transformOrigin = "0 0";
           page2Wrapper.scrollTo(clickX * (maxZoomLevel - 1), (clickY - offsetTop) * (maxZoomLevel - 1));
         },500);
-        // }
       }
     }
-    lastTapTime = clickTime;
-    console.log(`lastTapTime: ${lastTapTime}`);
-    clickTime = undefined;
-  } else {
-    // if (clickTime - dragTime < 150) {
-    //   dragTime = undefined;
-      clickTime = undefined;
-      if (isZoomedIn === true) {
-        isZoomedIn = false;
-        page2.style.transformOrigin = `${clickX}px ${clickY}px`;
-        page2.style.removeProperty('transform');
-        page2Wrapper.style.removeProperty('overflow');
-      } else {
-        isZoomedIn = true;
-        clickX = event.clientX;
-        clickY = event.clientY;
-        page2.style.transformOrigin = `${clickX}px ${clickY}px`;
-        page2.style.transform = "scale(2)";
-        setTimeout(function(){
-          page2Wrapper.style.overflow = "scroll";
-          page2.style.transformOrigin = "0 0";
-          page2Wrapper.scrollTo(clickX, clickY);
-        },500);
-      }
-    // }
-    }
-    setTimeout(function() {
-      page2.style.removeProperty('transition');
-    }, 400);
-  // if (clickTime - dragTime < 150) {
-  //   dragTime = undefined;
-  //   clickTime = undefined;
-  //   if (isZoomedIn === true) {
-  //     isZoomedIn = false;
-  //     page2.style.transformOrigin = `${clickX}px ${clickY}px`;
-  //     page2.style.removeProperty('transform');
-  //     page2Wrapper.style.removeProperty('overflow');
-  //   } else {
-  //     isZoomedIn = true;
-  //     let touchLocations;
-  //     if (click.type === "touchend") {
-  //       console.log('setting touchLocations...');
-  //       touchLocations = click.changedTouches[0];
-  //       clickX = touchLocations.pageX;
-  //       clickY = touchLocations.pageY;
-  //     } else {
-  //       clickX = click.clientX;
-  //       clickY = click.clientY;
-  //     }
-  //     page2.style.transformOrigin = `${clickX}px ${clickY}px`;
-  //     page2.style.transform = "scale(2)";
-  //     setTimeout(function(){
-  //       page2Wrapper.style.overflow = "scroll";
-  //       page2.style.transformOrigin = "0 0";
-  //       page2Wrapper.scrollTo(clickX, clickY);
-  //     },500);
-  //   }
-  // }
+  }
+  lastTapTime = clickTime;
+  clickTime = undefined;
+  setTimeout(function() {
+    page2.style.removeProperty('transition')
+    console.log('transition removed...);
+  }, 1000);
 }
-/*
-imageContainer2.onclick = function(click) {
-if (dragged === true) {
-  console.log('test');
-  click.stopPropagation();
-  click.preventDefault();
-  dragged = false;
-  return false;
-} else {
-if (isZoomedIn === true) {
-  isZoomedIn = false;
-  page2.style.transformOrigin = `${clickX}px ${clickY}px`;
-page2.style.removeProperty('transform');
-  page2Wrapper.style.removeProperty('overflow');
-} else {
-  isZoomedIn = true;
-  clickX = click.clientX;
-  console.log(clickX);
-  clickY = click.clientY;
-  page2.style.transformOrigin = `${clickX}px ${clickY}px`;
-  page2.style.transform = "scale(2)";
 
-  setTimeout(function(){
-    page2Wrapper.style.overflow = "scroll";
-    page2.style.transformOrigin = "0 0";
-    page2Wrapper.scrollTo(clickX, clickY);
-
-  },500);
-}
-}
-}
-*/
 page2Wrapper.onscroll = function() {
   if (isZoomedIn === true) {
     clickX = page2Wrapper.scrollLeft;
