@@ -233,7 +233,6 @@ function moveHandler(event) {
   zoomLevel = isZoomedIn === true ? (oldZoomLevel * distanceFactor) : distanceFactor;
   console.log(`${zoomLevel}`);
   page2.style.transform = `scale(${zoomLevel})`;
-  isZoomedIn = true;
 }
 
 function endHandler(event) {
@@ -247,6 +246,7 @@ function endHandler(event) {
       zoomLevel = maxZoomLevel;
       page2.style.transform = `scale(${zoomLevel})`;
     }
+    isZoomedIn = true;
     setTimeout(function(){
       page2.style.height = `${imageContainer2.clientHeight + ((offsetTop * 2) / zoomLevel)}px`;
       page2Wrapper.style.overflow = "scroll";
