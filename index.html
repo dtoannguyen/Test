@@ -311,7 +311,7 @@ function zoomIntoImageContainer2(event) {
   event = event || window.event;
   console.log(event.type);
   page2.style.transition = "transform 0.3s ease";
-  windowHeight = `${window.innerHeight}px`;
+  windowHeight = "100vh";
   if (event.type === "touchend") {
     console.log('touchend event...');
     console.log(`Fingers at touchend: ${event.changedTouches.length}`);
