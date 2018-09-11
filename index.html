@@ -209,6 +209,7 @@ function zoomIntoImageContainer2Gesture(event) {
     // midPointY = (touch1Y + touch2Y)/2;
     initDistance = Math.sqrt(Math.pow(touch1X - touch2X, 2) + Math.pow(touch1Y - touch2Y, 2));
     console.log(initDistance);
+    offsetTop = imageContainer2.offsetTop;
     document.ontouchend = endHandler;
     document.ontouchmove = moveHandler;
   } else {
@@ -264,9 +265,14 @@ function endHandler(event) {
   document.ontouchend = null;
   console.log('removed touchend eventListener...');
   setTimeout(function(){
+    page2.style.height = `${imageContainer2.clientHeight + ((offsetTop * 2) / maxZoomLevel)}px`;
     page2Wrapper.style.overflow = "scroll";
     page2.style.transformOrigin = "0 0";
-    page2Wrapper.scrollTo(midPointX, midPointY);
+    page2Wrapper.scrollTo(midPointX * (maxZoomLevel - 1), (midPointY - offsetTop) * (maxZoomLevel - 1));
+    
+/*    page2Wrapper.style.overflow = "scroll";
+    page2.style.transformOrigin = "0 0";
+    page2Wrapper.scrollTo(midPointX, midPointY); */
     imageContainer2.addEventListener('touchend', zoomIntoImageContainer2);
     page2.style.removeProperty('transition');
   },500);
@@ -299,7 +305,6 @@ function zoomIntoImageContainer2(event) {
       } else {
         isZoomedIn = true;
         offsetTop = imageContainer2.offsetTop;
-        page2Height = page2.clientHeight;
         let touchLocations = event.changedTouches[0];
         console.log('setting touchLocations...');
         clickX = touchLocations.pageX;
