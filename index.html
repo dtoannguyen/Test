@@ -248,10 +248,18 @@ function endHandler(event) {
   event.preventDefault();
   event.stopPropagation();
   page2.style.transition = "transform 0.4s ease";
-  if (zoomLevel > maxZoomLevel) {
-    zoomLevel = maxZoomLevel;
-    page2.style.transform = `scale(${zoomLevel})`;
-  } else if (zoomLevel <= minZoomLevel) {
+  if (zoomLevel > minZoomLevel) {
+    if (zoomLevel > maxZoomLevel) {
+      zoomLevel = maxZoomLevel;
+      page2.style.transform = `scale(${zoomLevel})`;
+    }
+    setTimeout(function(){
+      page2.style.height = `${imageContainer2.clientHeight + ((offsetTop * 2) / zoomLevel)}px`;
+      page2Wrapper.style.overflow = "scroll";
+      page2.style.transformOrigin = "0 0";
+      page2Wrapper.scrollTo(midPointX * (zoomLevel - 1), (midPointY - offsetTop) * (zoomLevel - 1));
+    }, 500);
+  } else {
     page2.style.removeProperty('transform');
     isZoomedIn = false;
   }
@@ -264,22 +272,11 @@ function endHandler(event) {
   imageContainer2.removeEventListener('touchend', zoomIntoImageContainer2);
   document.ontouchend = null;
   console.log('removed touchend eventListener...');
-  setTimeout(function(){
-    page2.style.height = `${imageContainer2.clientHeight + ((offsetTop * 2) / zoomLevel)}px`;
-    page2Wrapper.style.overflow = "scroll";
-    page2.style.transformOrigin = "0 0";
-    page2Wrapper.scrollTo(midPointX * (zoomLevel - 1), (midPointY - offsetTop) * (zoomLevel - 1));
-    
-/*    page2Wrapper.style.overflow = "scroll";
-    page2.style.transformOrigin = "0 0";
-    page2Wrapper.scrollTo(midPointX, midPointY); */
+  setTimeout(function() {
     imageContainer2.addEventListener('touchend', zoomIntoImageContainer2);
     page2.style.removeProperty('transition');
-  },500);
+  }, 900);
 }
-
-
-
 
 imageContainer2.addEventListener('touchend', zoomIntoImageContainer2);
 
