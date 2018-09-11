@@ -310,14 +310,15 @@ function zoomIntoImageContainer2(event) {
   clickTime = new Date();
   event = event || window.event;
   console.log(event.type);
-  page2.style.transition = "transform 0.4s ease";
+  page2.style.transition = "transform 0.3s ease";
+  windowHeight = `${window.innerHeight}px`;
   if (event.type === "touchend") {
     console.log('touchend event...');
     console.log(`Fingers at touchend: ${event.changedTouches.length}`);
     if (clickTime - lastTapTime < 250 && event.changedTouches.length === 1) {
       if (isZoomedIn === true) {
         isZoomedIn = false;
-        page2.style.height = `${window.innerHeight}px`;
+        page2.style.height = windowHeight;
         page2.style.transformOrigin = `${clickX}px ${clickY}px`;
         page2.style.removeProperty('transform');
         page2Wrapper.style.removeProperty('overflow');
@@ -337,7 +338,7 @@ function zoomIntoImageContainer2(event) {
           page2Wrapper.style.overflow = "scroll";
           page2.style.transformOrigin = "0 0";
           page2Wrapper.scrollTo(clickX * (maxZoomLevel - 1), (clickY - offsetTop) * (maxZoomLevel - 1));
-        },500);
+        },350);
       }
     }
   }
@@ -346,7 +347,7 @@ function zoomIntoImageContainer2(event) {
   setTimeout(function() {
     page2.style.removeProperty('transition');
     console.log('transition removed...');
-  }, 1000);
+  }, 350);
 }
 
 page2Wrapper.onscroll = function() {
@@ -499,7 +500,7 @@ function closeDragElement(e) {
 rightArrow.onclick = function() {
 console.log('right arrow clicked...');
 wrapper.style.transition = "left 0.3s ease-in-out";
-wrapper.style.left = `-${window.innerWidth + 60}px`;
+wrapper.style.left = `-${window.innerWidth + 80}px`;
 setTimeout(function(){
   wrapper.style.removeProperty('transition');
 }, 300);
