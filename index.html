@@ -266,6 +266,7 @@ function endHandler(event) {
   imageContainer2.removeEventListener('touchend', zoomIntoImageContainer2);
   document.ontouchend = null;
   console.log('removed touchend eventListener...');
+  oldZoomLevel = zoomLevel;
   setTimeout(function() {
     imageContainer2.addEventListener('touchend', zoomIntoImageContainer2);
     page2.style.removeProperty('transition');
