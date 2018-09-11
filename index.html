@@ -16,8 +16,8 @@
    position: relative;
    height: 100%;
  }
-    
-    
+
+
 .body-wrapper {
   text-align: center;
   overflow: hidden;
@@ -155,7 +155,7 @@ button {
   </div>
 
 <script>
-  
+
 let closingButton = document.getElementById('closing-button');
 let leftArrow = document.getElementById('left-arrow');
 let rightArrow = document.getElementById('right-arrow');
@@ -186,12 +186,12 @@ closingButton.onclick = function() {
   document.body.style.removeProperty('overflow');
 }
 // imageContainer2.addEventListener('click', zoomIntoImageContainer2);
-// imageContainer2.ontouchstart = zoomIntoImageContainer2Gesture;
-  
+imageContainer2.ontouchstart = zoomIntoImageContainer2Gesture;
+
 function zoomIntoImageContainer2Gesture(event) {
   console.log('imageContainer2 touchstart event...');
   minZoomLevel = 1;
-  maxZoomLevel = 2;
+  maxZoomLevel = 5;
   event = event || window.event;
   /*event.preventDefault();
   event.stopPropagation();*/
@@ -247,10 +247,10 @@ function endHandler(event) {
   event.preventDefault();
   event.stopPropagation();
   page2.style.transition = "transform 0.4s ease";
-  if (zoomLevel > 3) {
-    zoomLevel = 3;
+  if (zoomLevel > maxZoomLevel) {
+    zoomLevel = maxZoomLevel;
     page2.style.transform = `scale(${zoomLevel})`;
-  } else if (zoomLevel <= 1) {
+  } else if (zoomLevel <= minZoomLevel) {
     page2.style.removeProperty('transform');
     isZoomedIn = false;
   }
@@ -276,13 +276,14 @@ function endHandler(event) {
 
 
 imageContainer2.addEventListener('touchend', zoomIntoImageContainer2);
-  
+
 function zoomIntoImageContainer2(event) {
   clickTime = new Date();
   event = event || window.event;
   console.log(event.type);
-  page2.style.transition = "transform 0.3s ease";
+  page2.style.transition = "transform 0.4s ease";
   windowHeight = "100vh";
+  maxZoomLevel = 5;
   if (event.type === "touchend") {
     console.log('touchend event...');
     console.log(`Fingers at touchend: ${event.changedTouches.length}`);
@@ -290,12 +291,13 @@ function zoomIntoImageContainer2(event) {
       if (isZoomedIn === true) {
         isZoomedIn = false;
         page2.style.height = windowHeight;
-        page2.style.transformOrigin = `${clickX}px ${clickY}px`;
+        offsetTop = imageContainer2.offsetTop;
+        //page2Wrapper.scrollTo(clickX, clickY + (offsetTop * (maxZoomLevel - 1)));
+        page2.style.transformOrigin = `${(clickX / (maxZoomLevel-1))}px ${(clickY / (maxZoomLevel - 1)) + offsetTop}px`;
         page2.style.removeProperty('transform');
         page2Wrapper.style.removeProperty('overflow');
       } else {
         isZoomedIn = true;
-        maxZoomLevel = 3;
         offsetTop = imageContainer2.offsetTop;
         page2Height = page2.clientHeight;
         let touchLocations = event.changedTouches[0];
@@ -318,7 +320,7 @@ function zoomIntoImageContainer2(event) {
   setTimeout(function() {
     page2.style.removeProperty('transition');
     console.log('transition removed...');
-  }, 350);
+  }, 800);
 }
 
 page2Wrapper.onscroll = function() {
