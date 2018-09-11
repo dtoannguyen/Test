@@ -265,10 +265,10 @@ function endHandler(event) {
   document.ontouchend = null;
   console.log('removed touchend eventListener...');
   setTimeout(function(){
-    page2.style.height = `${imageContainer2.clientHeight + ((offsetTop * 2) / maxZoomLevel)}px`;
+    page2.style.height = `${imageContainer2.clientHeight + ((offsetTop * 2) / zoomLevel)}px`;
     page2Wrapper.style.overflow = "scroll";
     page2.style.transformOrigin = "0 0";
-    page2Wrapper.scrollTo(midPointX * (maxZoomLevel - 1), (midPointY - offsetTop) * (maxZoomLevel - 1));
+    page2Wrapper.scrollTo(midPointX * (zoomLevel - 1), (midPointY - offsetTop) * (zoomLevel - 1));
     
 /*    page2Wrapper.style.overflow = "scroll";
     page2.style.transformOrigin = "0 0";
