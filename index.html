@@ -193,9 +193,6 @@ function zoomIntoImageContainer2Gesture(event) {
   minZoomLevel = 1;
   maxZoomLevel = 5;
   event = event || window.event;
-  /*event.preventDefault();
-  event.stopPropagation();*/
-  console.log('event.targetTouches')
   if (event.targetTouches.length === 2) {
     console.log('detected 2 fingers...');
     touch1Location = event.targetTouches[0];
@@ -204,9 +201,6 @@ function zoomIntoImageContainer2Gesture(event) {
     touch1Y = touch1Location.pageY;
     touch2X = touch2Location.pageX;
     touch2Y = touch2Location.pageY;
-    console.log(`touch1X: ${touch1X}, touch1Y: ${touch1Y}, touch2X: ${touch2X}, touch2Y: ${touch2Y}`);
-    // midPointX = (touch1X + touch2X)/2;
-    // midPointY = (touch1Y + touch2Y)/2;
     initDistance = Math.sqrt(Math.pow(touch1X - touch2X, 2) + Math.pow(touch1Y - touch2Y, 2));
     console.log(initDistance);
     offsetTop = imageContainer2.offsetTop;
@@ -236,8 +230,8 @@ function moveHandler(event) {
   distanceFactor = (newDistance / initDistance);
   console.log(distanceFactor);
   page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
-  /*zoomLevel = 0.25 * distanceFactor + 0.75;*/
-  zoomLevel = distanceFactor;
+  zoomLevel = isZoomedIn === true ? (oldZoomLevel * distanceFactor) : distanceFactor;
+  console.log(`${zoomLevel}`);
   page2.style.transform = `scale(${zoomLevel})`;
   isZoomedIn = true;
 }
