@@ -208,6 +208,7 @@ function zoomIntoImageContainer2Gesture(event) {
     page2.style.height = "100vh";
     offsetTop = imageContainer2.offsetTop;
     page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
+    page2Wrapper.scrollTo(midPointX, midPointY);
 //    page2.style.transformOrigin = isZoomedIn === true ? `${(midPointX / (oldZoomLevel - 1))}px ${(midPointY / (oldZoomLevel - 1)) + offsetTop}px` : `${midPointX}px ${midPointY}px`;
     document.ontouchend = endHandler;
     document.ontouchmove = moveHandler;
