@@ -207,8 +207,12 @@ function zoomIntoImageContainer2Gesture(event) {
     midPointY = (touch1Y + touch2Y)/2;
     page2.style.height = "100vh";
     offsetTop = imageContainer2.offsetTop;
+    if (isZoomedIn === true) {
+      page2.style.transformOrigin = `${midPointX / oldZoomLevel}px ${midPointY / oldZoomLevel}px`;
+      page2Wrapper.scrollTo(0,0);
+    } else {
     page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
-    page2Wrapper.scrollTo(0,0);
+    }
     /*if (isZoomedIn === true) {
       page2Wrapper.scrollTo(midPointX - (midPointX / oldZoomLevel), midPointY - (midPointY / oldZoomLevel));
     }*/
