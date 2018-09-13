@@ -197,8 +197,8 @@ function zoomIntoImageContainer2Gesture(event) {
     console.log('detected 2 fingers...');
     if (isZoomedIn === true) {
       page2.style.height = "100vh";
-      pageScrollLeft = page2.scrollLeft;
-      pageScrollTop = page2.scrollTop;
+      pageScrollLeft = page2Wrapper.scrollLeft;
+      pageScrollTop = page2Wrapper.scrollTop;
     }
     touch1Location = event.targetTouches[0];
     touch2Location = event.targetTouches[1];
