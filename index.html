@@ -217,10 +217,11 @@ function zoomIntoImageContainer2Gesture(event) {
     midPointX = (touch1X + touch2X)/2;
     midPointY = (touch1Y + touch2Y)/2;
     if (isZoomedIn === true) {
-      page2.style.transformOrigin = `${pageScrollLeft + (midPointX / oldZoomLevel)}px ${pageScrollTop + (midPointY / oldZoomLevel)}px`;
+      // page2.style.transformOrigin = `${pageScrollLeft + (midPointX / oldZoomLevel)}px ${pageScrollTop + (midPointY / oldZoomLevel)}px`;
+      page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
       // page2Wrapper.scrollTo(pageScrollLeft, pageScrollTop);
     } else {
-    page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
+      page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
     }
     /*if (isZoomedIn === true) {
       page2Wrapper.scrollTo(midPointX - (midPointX / oldZoomLevel), midPointY - (midPointY / oldZoomLevel));
