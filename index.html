@@ -204,21 +204,21 @@ function zoomIntoImageContainer2Gesture(event) {
     touch1Y = touch1Location.pageY;
     touch2X = touch2Location.pageX;
     touch2Y = touch2Location.pageY;
-    if (isZoomedIn === true) {
+    /*if (isZoomedIn === true) {
       pageScrollLeft = page2Wrapper.scrollLeft;
       pageScrollTop = page2Wrapper.scrollTop + (offsetTop - oldOffsetTop);
       touch1X = touch1Location.clientX;
       touch1Y = touch1Location.clientY;
       touch2X = touch2Location.clientX;
       touch2Y = touch2Location.clientY;
-    }
+    }*/
     initDistance = Math.sqrt(Math.pow(touch1X - touch2X, 2) + Math.pow(touch1Y - touch2Y, 2));
     console.log(initDistance);
     midPointX = (touch1X + touch2X)/2;
     midPointY = (touch1Y + touch2Y)/2;
     if (isZoomedIn === true) {
       // page2.style.transformOrigin = `${pageScrollLeft + (midPointX / oldZoomLevel)}px ${pageScrollTop + (midPointY / oldZoomLevel)}px`;
-      page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
+      page2.style.transformOrigin = `${(midPointX / (oldZoomLevel - 1))}px ${(midPointY / (oldZoomLevel - 1)) + offsetTop}px`;
       // page2Wrapper.scrollTo(pageScrollLeft, pageScrollTop);
     } else {
       page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
