@@ -206,7 +206,7 @@ function zoomIntoImageContainer2Gesture(event) {
     touch2Y = touch2Location.pageY;
     if (isZoomedIn === true) {
       pageScrollLeft = page2Wrapper.scrollLeft;
-      pageScrollTop = page2Wrapper.scrollTop;
+      pageScrollTop = page2Wrapper.scrollTop - (offsetTop - oldOffsetTop);
       /*touch1X = touch1Location.clientX;
       touch1Y = touch1Location.clientY;
       touch2X = touch2Location.clientX;
