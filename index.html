@@ -196,6 +196,10 @@ function zoomIntoImageContainer2Gesture(event) {
   if (event.targetTouches.length === 2) {
     console.log('detected 2 fingers...');
     oldOffsetTop = imageContainer2.offsetTop;
+    if (isZoomedIn === true) {
+      pageScrollLeft = page2Wrapper.scrollLeft;
+      pageScrollTop = page2Wrapper.scrollTop
+    }
     page2.style.height = "100vh";
     offsetTop = imageContainer2.offsetTop;
     touch1Location = event.targetTouches[0];
@@ -204,14 +208,14 @@ function zoomIntoImageContainer2Gesture(event) {
     touch1Y = touch1Location.pageY;
     touch2X = touch2Location.pageX;
     touch2Y = touch2Location.pageY;
-    if (isZoomedIn === true) {
+    /*if (isZoomedIn === true) {
       pageScrollLeft = page2Wrapper.scrollLeft;
       pageScrollTop = page2Wrapper.scrollTop - ((offsetTop - oldOffsetTop) * oldZoomLevel);
-      /*touch1X = touch1Location.clientX;
+      touch1X = touch1Location.clientX;
       touch1Y = touch1Location.clientY;
       touch2X = touch2Location.clientX;
-      touch2Y = touch2Location.clientY;*/
-    }
+      touch2Y = touch2Location.clientY;
+    }*/
     initDistance = Math.sqrt(Math.pow(touch1X - touch2X, 2) + Math.pow(touch1Y - touch2Y, 2));
     console.log(initDistance);
     midPointX = (touch1X + touch2X)/2;
