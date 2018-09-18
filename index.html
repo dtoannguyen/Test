@@ -192,6 +192,8 @@ function zoomIntoImageContainer2Gesture(event) {
   console.log('imageContainer2 touchstart event...');
   minZoomLevel = 1;
   maxZoomLevel = 5;
+  let pageScrollTop;
+  let pageScrollLeft;
   event = event || window.event;
   if (event.targetTouches.length === 2) {
     console.log('detected 2 fingers...');
