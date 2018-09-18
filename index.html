@@ -201,8 +201,8 @@ function zoomIntoImageContainer2Gesture(event) {
       pageScrollTop = page2Wrapper.scrollTop
     }
     page2.style.height = "100vh";
-    pageScrollTop += (offsetTop - oldOffsetTop) * oldZoomLevel;
     offsetTop = imageContainer2.offsetTop;
+    pageScrollTop += (offsetTop - oldOffsetTop) * oldZoomLevel;
     touch1Location = event.targetTouches[0];
     touch2Location = event.targetTouches[1];
     touch1X = touch1Location.pageX;
