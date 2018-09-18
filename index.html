@@ -201,6 +201,7 @@ function zoomIntoImageContainer2Gesture(event) {
       pageScrollTop = page2Wrapper.scrollTop
     }
     page2.style.height = "100vh";
+    page2Wrapper.scrollTo(0,0);
     offsetTop = imageContainer2.offsetTop;
     touch1Location = event.targetTouches[0];
     touch2Location = event.targetTouches[1];
@@ -226,9 +227,9 @@ function zoomIntoImageContainer2Gesture(event) {
 //      page2Wrapper.scrollTo(pageScrollLeft, pageScrollTop);
 //      page2Wrapper.scrollTo(0,0);
       page2.style.transformOrigin = `${(pageScrollLeft + midPointX) / oldZoomLevel}px ${(pageScrollTop + midPointY) / oldZoomLevel}px`;
-      setTimeout(function(){
+/*      setTimeout(function(){
         page2Wrapper.scrollTo(0,0);
-      },600);
+      },600);*/
       
     } else {
       page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
