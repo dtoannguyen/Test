@@ -201,7 +201,7 @@ function zoomIntoImageContainer2Gesture(event) {
       pageScrollTop = page2Wrapper.scrollTop
     }
     page2.style.height = "100vh";
-    page2Wrapper.scrollTo(0,0);
+    pageScrollTop += (offsetTop - oldOffsetTop) * oldZoomLevel;
     offsetTop = imageContainer2.offsetTop;
     touch1Location = event.targetTouches[0];
     touch2Location = event.targetTouches[1];
@@ -221,9 +221,10 @@ function zoomIntoImageContainer2Gesture(event) {
     console.log(initDistance);
     midPointX = (touch1X + touch2X)/2;
     midPointY = (touch1Y + touch2Y)/2;
+    page2Wrapper.scrollTo(((pageScrollLeft + midPointX) / oldZoomLevel) - midPointX, ((pageScrollTop + midPointY) / oldZoomLevel) - midPointY);
     if (isZoomedIn === true) {
       // page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
-      pageScrollTop += (offsetTop - oldOffsetTop) * oldZoomLevel;
+//      pageScrollTop += (offsetTop - oldOffsetTop) * oldZoomLevel;
 //      page2Wrapper.scrollTo(pageScrollLeft, pageScrollTop);
 //      page2Wrapper.scrollTo(0,0);
       page2.style.transformOrigin = `${(pageScrollLeft + midPointX) / oldZoomLevel}px ${(pageScrollTop + midPointY) / oldZoomLevel}px`;
