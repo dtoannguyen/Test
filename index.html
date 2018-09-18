@@ -223,8 +223,8 @@ function zoomIntoImageContainer2Gesture(event) {
     if (isZoomedIn === true) {
       // page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
       pageScrollTop += (offsetTop - oldOffsetTop) * oldZoomLevel;
-//      page2Wrapper.scrollTo(pageScrollLeft, pageScrollTop);
-      page2Wrapper.scrollTo(0,0);
+      page2Wrapper.scrollTo(pageScrollLeft, pageScrollTop);
+//      page2Wrapper.scrollTo(0,0);
       setTimeout(function(){
         page2.style.transformOrigin = `${(pageScrollLeft + midPointX) / oldZoomLevel}px ${(pageScrollTop + midPointY) / oldZoomLevel}px`;
       },600);
