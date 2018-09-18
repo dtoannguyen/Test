@@ -225,10 +225,10 @@ function zoomIntoImageContainer2Gesture(event) {
       pageScrollTop += (offsetTop - oldOffsetTop) * oldZoomLevel;
 //      page2Wrapper.scrollTo(pageScrollLeft, pageScrollTop);
 //      page2Wrapper.scrollTo(0,0);
-//      setTimeout(function(){
-        page2.style.transformOrigin = `${(pageScrollLeft + midPointX) / oldZoomLevel}px ${(pageScrollTop + midPointY) / oldZoomLevel}px`;
+      page2.style.transformOrigin = `${(pageScrollLeft + midPointX) / oldZoomLevel}px ${(pageScrollTop + midPointY) / oldZoomLevel}px`;
+      setTimeout(function(){
         page2Wrapper.scrollTo(pageScrollLeft, pageScrollTop);
-//      },600);
+      },600);
       
     } else {
       page2.style.transformOrigin = `${midPointX}px ${midPointY}px`;
